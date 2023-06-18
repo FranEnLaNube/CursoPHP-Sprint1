@@ -7,22 +7,21 @@
 <h2>Solució:</h2>
 <?php 
 //Interface Animal which is implemented for Gos and Gat
-interface Animal
-{
+abstract class Animal {
     //makeSound methode empty and public
-    function makeSound();
+    abstract function makeSound();
+    // Shared atribute
+    public $name;
 }
 //Class Gos who implements Animal to use makeSound in it.
 class Gos implements Animal {
-    //Own property
-    public $name;
+    //Own function
     public function makeSound(){
         return "Bup, bup!";
     }
 }
 //Class gat similar to Gos
 class Gat implements Animal {
-    public $name;
     public function makeSound(){
         return "Mèu";
     }
