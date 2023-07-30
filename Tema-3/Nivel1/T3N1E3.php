@@ -1,27 +1,50 @@
 <?php
-//Función que chequea si una letra está presente en todas las palabras de otro array
-function checker($words, $char)
+/**
+ * Function to check if a letter if present in an array of words
+ * @param array $words The words to check
+ * @param string $letter The letter to find
+ * @return bool if is present in all the words or not
+ */
+function checker($words, $letter): bool
 {
-    //Obtengo cantidad de elementos del array
-    $words_len = count($words);
-    //Inicializo contador, que tiene que llegar al $words_len para que sea TRUE
-    $counter = 0;
-    //Prevengo error con la capitalización de las palabras, str_contains() daría false
-    $char = strtolower($char);
-    //Recorro todas las palabras del array
-    for ($i = 0; $i < $words_len; $i++) {
-        // Solo sumo al contador en caso de que encuentre, si no, sale
-        if (!str_contains($words[$i], $char)) {
-            break;
+    foreach ($words as $word) {
+        // stripos() returns an int or null, so with is_int() get a bool. Also possible to use is_null()
+        $isPresent = is_int(stripos($word, $letter));
+        if (!$isPresent) {
+            return $isPresent;
         }
-        //Si encuentra la letra, sumo 1 al contador
-        $counter++;
     }
-    //Si el contador llega al largo del array, es TRUE
-    if ($counter == $words_len) {
-        echo "TRUE";
-    } else {
-        echo "FALSE";
-    }
+    return $isPresent;
 }
-checker(['Pedro', 'Roberto', 'Martin', 'Mariano'], 'R');
+
+// User interaction
+function getWords(): array
+{
+    echo "Please insert your words. Insert 'q' to accept\n";
+    do {
+        $word = readline("Your word: ");
+        if (empty($word) || is_numeric($word)) {
+            echo "Please fill the words correctly.\n";
+            $word = readline("Your word: ");
+        }
+        if ($word != 'q' && !empty($word) && !is_numeric($word)) {
+            $words[] = $word;
+        }
+    } while ($word != 'q');
+    return $words;
+}
+function getLetter(): string
+{
+    echo "Please insert the letter to find.\n";
+    $letter = readline("Your letter:\n");
+    if (empty($letter) || is_numeric($letter) || strlen($letter) != 1) {
+        echo "Please give a correct letter.\n";
+        getLetter(); // Ask for letter again 
+    }
+    return $letter;
+}
+//Solution
+$words = getWords();
+$letter = getLetter();
+
+var_dump($result = checker($words, $letter));
